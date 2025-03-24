@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض بيانات الطلاب | October High Institute</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="./اساسيات/Logo_OHI_min.png" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root {
+            --primary: #e63946;
+            --dark: #1d3557;
+            --light: #f8f9fa;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background: var(--light);
+            min-height: 100vh;
+        }
+        
+        /* القائمة الجانبية */
+        .sidebar {
+            position: fixed;
+            right: -300px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: var(--dark);
+            color: white;
+            transition: right 0.3s;
+            padding: 20px;
+            z-index: 1000;
+        }
+        
+        .sidebar.active {
+            right: 0;
+        }
+        
+        .sidebar-logo {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .sidebar-menus a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            margin: 5px 0;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menus a:hover {
+            background: var(--primary);
+            transform: translateX(-5px);
+        }
+        
+        .menu-off {
+            background: var(--primary);
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        /* المحتوى الرئيسي */
+        .main-content {
+            transition: margin-right 0.3s;
+            min-height: 100vh;
+        }
+        
+        .main-content.active {
+            margin-right: 300px;
+        }
+        
+        /* شريط التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-logo {
+            height: 50px;
+        }
+        
+        .menu-toggle, .location-icon {
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .menu-toggle:hover, .location-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        /* جدول البيانات */
+        .data-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .data-title {
+            text-align: center;
+            margin: 20px 0;
+            color: var(--dark);
+            font-size: 1.8rem;
+        }
+        
+        .students-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: var(--shadow);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .students-table th, .students-table td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .students-table th {
+            background: var(--dark);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .students-table tr:hover {
+            background: rgba(0,0,0,0.02);
+        }
+        
+        /* تذييل الصفحة */
+        .footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+        }
+        
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .students-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- القائمة الجانبية -->
+    <div class="sidebar">
+        <h2 class="sidebar-logo">October High Institute</h2>
+        <div class="sidebar-menus">
+            <a href="https://www.facebook.com/ohinstitute">الصفحة الرسمية</a>
+            <a href="https://www.ohi.edu.eg/default.aspx">الموقع الرسمي</a>
+            <a href="https://wa.me/+201102716716?text=مرحبا اريد التواصل معكم">الدعم الفني</a>
+            <a href="./about.html">من نحن</a>
+            <a href="./feedback.html">قولنا رأيك</a>
+            <a href="#" class="menu-off">إغلاق</a>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <!-- شريط التنقل العلوي -->
+        <div class="navbar">
+            <div class="menu-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                    <path d="M5 5H13V19H5V5ZM19 19H15V5H19V19ZM4 3C3.44772 3 3 3.44772 3 4V20C3 20.5523 3.44772 21 4 21H20C20.5523 21 21 20.5523 21 20V4C21 3.44772 20.5523 3 20 3H4ZM7 12L11 8.5V15.5L7 12Z"></path>
+                </svg>
+            </div>
+            <img class="header-logo" src="./اساسيات/logo.jpg" alt="شعار المعهد">
+            <a href="./location.html" class="location-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                    <path d="M12 20.8995L16.9497 15.9497C19.6834 13.2161 19.6834 8.78392 16.9497 6.05025C14.2161 3.31658 9.78392 3.31658 7.05025 6.05025C4.31658 8.78392 4.31658 13.2161 7.05025 15.9497L12 20.8995ZM12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364L12 23.7279ZM12 13C13.1046 13 14 12.1046 14 11C14 9.89543 13.1046 9 12 9C10.8954 9 10 9.89543 10 11C10 12.1046 10.8954 13 12 13ZM12 15C9.79086 15 8 13.2091 8 11C8 8.79086 9.79086 7 12 7C14.2091 7 16 8.79086 16 11C16 13.2091 14.2091 15 12 15Z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <!-- قسم عرض البيانات -->
+        <div class="data-container">
+            <h1 class="data-title">بيانات الطلاب المسجلين</h1>
+            
+            <div class="table-responsive">
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>الاسم الكامل</th>
+                            <th>الكود الجامعي</th>
+                            <th>العمر</th>
+                            <th>البريد الإلكتروني</th>
+                            <th>القسم</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsData">
+                        <!-- سيتم ملء البيانات هنا بواسطة JavaScript -->
+                        <tr>
+                            <td colspan="6" style="text-align:center;">جاري تحميل البيانات...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- تذييل الصفحة -->
+        <div class="footer">
+            <p>موقع تجريبي خاص بفريق رحمه 2025</p>
+        </div>
+    </div>
+
+    <script>
+        // إدارة القائمة الجانبية
+        const menuToggle = document.querySelector('.menu-toggle');
+        const menuClose = document.querySelector('.menu-off');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('active');
+        });
+
+        menuClose.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            mainContent.classList.remove('active');
+        });
+
+        // جلب وعرض بيانات الطلاب من Google Sheets
+        async function fetchStudentsData() {
+            try {
+                // استبدل هذا الرابط برابط Google Apps Script الخاص بك لقراءة البيانات
+                const sheetId = '1jPKYsdxnocGk3Y8lJg00C_nppVLhEm07-v-LAx-gnq0';
+                const sheetName = encodeURIComponent('Sheet1'); // اسم الشيت في ملفك
+                const apiUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
+                
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const text = await response.text();
+                const jsonText = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]+)\);/)[1];
+                const jsonData = JSON.parse(jsonText);
+                
+                const students = parseSheetData(jsonData);
+                displayStudentsData(students);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('studentsData').innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align:center;color:var(--primary);">
+                            حدث خطأ أثناء جلب البيانات، يرجى المحاولة لاحقاً
+                        </td>
+                    </tr>
+                `;
+                Swal.fire('خطأ', 'حدث خطأ أثناء جلب البيانات', 'error');
+            }
+        }
+
+        // تحويل بيانات الجدول إلى مصفوفة كائنات
+        function parseSheetData(data) {
+            const cols = data.table.cols;
+            const rows = data.table.rows;
+            
+            const students = [];
+            
+            // تخطي الصف الأول (العناوين)
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                const student = {};
+                
+                // التأكد من وجود بيانات في الصف
+                if (row.c && row.c.length > 0) {
+                    student.name = row.c[0]?.v || 'غير متوفر';
+                    student.code = row.c[1]?.v || 'غير متوفر';
+                    student.age = row.c[2]?.v || 'غير متوفر';
+                    student.email = row.c[3]?.v || 'غير متوفر';
+                    student.department = row.c[4]?.v || 'غير محدد';
+                    
+                    students.push(student);
+                }
+            }
+            
+            return students;
+        }
+
+        // عرض البيانات في الجدول
+        function displayStudentsData(students) {
+            const tableBody = document.getElementById('studentsData');
+            tableBody.innerHTML = '';
+            
+            if (!students || students.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align:center;">
+                            لا توجد بيانات متاحة
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            students.forEach((student, index) => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${student.name}</td>
+                    <td>${student.code}</td>
+                    <td>${student.age}</td>
+                    <td>${student.email}</td>
+                    <td>${getDepartmentName(student.department)}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        // تحويل كود القسم إلى اسم قابل للقراءة
+        function getDepartmentName(code) {
+            const departments = {
+                'cs': 'علوم الحاسب',
+                'it': 'تكنولوجيا المعلومات',
+                'is': 'نظم المعلومات',
+                'ai': 'الذكاء الاصطناعي'
+            };
+            return departments[code] || code || 'غير محدد';
+        }
+
+        // جلب البيانات عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', fetchStudentsData);
+    </script>
+
+    <script src="javascript.js"></script>
+</body>
+</html>
