@@ -53,10 +53,10 @@
         */
        document.getElementById('showQr').addEventListener('click', () => {
            Swal.fire({
-               title: 'كود المطعم',
-               text: 'قم بمسح الكود للوصول إلى قائمتنا وعروضنا',
-               imageUrl: './images/qr-code.png', // يجب استبدالها بمسار الصورة الفعلي
-               imageAlt: 'كيو ار كود مطعم OHI',
+               title: 'كود الموقع',
+               text: 'قم بمسح الكود للوصول لمشاركة الموقع ',
+               imageUrl: "./اساسيات/QRcode_OHI.png", // يجب استبدالها بمسار الصورة الفعلي
+               imageAlt: 'كيو ار كود  OHI',
                confirmButtonText: 'حسناً'
            });
        });
