@@ -253,6 +253,69 @@
 
 
 
+              /* بطاقات البيانات */
+              .data-container {
+                padding: 20px;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 20px;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+            
+            .data-title {
+                text-align: center;
+                margin: 20px 0;
+                color: var(--dark);
+                font-size: 1.8rem;
+                grid-column: 1 / -1;
+            }
+            
+            .card {
+                background: white;
+                border-radius: 8px;
+                box-shadow: var(--shadow);
+                padding: 20px;
+                transition: transform 0.3s;
+            }
+            
+            .card:hover {
+                transform: translateY(-5px);
+            }
+            
+            .card-content {
+                margin-bottom: 15px;
+            }
+            
+            .card h2 {
+                color: var(--dark);
+                font-size: 1.2rem;
+                margin-bottom: 5px;
+            }
+            
+            .card-title {
+                color: #555;
+                font-size: 1rem;
+            }
+            
+            hr {
+                border: none;
+                border-top: 1px solid #eee;
+                margin: 15px 0;
+            }
+            
+            .checkybox {
+                display: block;
+                margin: 10px 0;
+                cursor: pointer;
+            }
+
+
+
+
+
+
+
 
 
 
@@ -294,7 +357,10 @@
 
 
 
-
+            
+      .data-container {
+        grid-template-columns: 1fr;
+    }
 
 
 
