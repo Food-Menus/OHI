@@ -200,9 +200,26 @@
           max-width: 600px;
           margin: 0 auto;
           padding: 20px;
-          background: white;
+          background: rgba(255, 255, 255, 0.502);
           border-radius: 8px;
           box-shadow: var(--shadow);
+      }
+
+      .background{
+        background-image: url('./اساسيات/WhatsApp\ .jpg'); /* استبدل URL_الصورة_الخاصة_بك برابط صورتك */
+        background-size: cover;
+        background-position: center;
+        box-shadow: var(--shadow);
+        animation: moveBackground 80s linear infinite alternate; /* حركة الخلفية */
+      }
+      
+      @keyframes moveBackground {
+        from {
+          background-position: left center;
+        }
+        to {
+          background-position: right center;
+        }
       }
       
       .form-group {
