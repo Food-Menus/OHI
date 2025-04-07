@@ -789,40 +789,11 @@
                         <div class="card-content">
                             <div class="card-title">القسم: ${getDepartmentName(department)}</div>
                         </div>
-                        <hr>
-                        <label class="checkybox">
-                            <input type="checkbox" id="${registeredId}" name="registered-${index}" value="registered"> تم التسجيل
-                        </label>
-                        <label class="checkybox">
-                            <input type="checkbox" id="${activeId}" name="active-${index}" value="active"> طالب نشط
-                        </label>
 
                     `;
                 
                     dataContainer.appendChild(card);
 
-                    // استعادة حالة checkboxes من localStorage
-                    const registeredCheckbox = document.getElementById(registeredId);
-                    const activeCheckbox = document.getElementById(activeId);
-
-                    const storedRegistered = localStorage.getItem(registeredId);
-                    if (storedRegistered === 'true') {
-                        registeredCheckbox.checked = true;
-                    }
-
-                    const storedActive = localStorage.getItem(activeId);
-                    if (storedActive === 'true') {
-                        activeCheckbox.checked = true;
-                    }
-
-                    // حفظ حالة checkboxes في localStorage عند التغيير
-                    registeredCheckbox.addEventListener('change', () => {
-                        localStorage.setItem(registeredId, registeredCheckbox.checked);
-                    });
-
-                    activeCheckbox.addEventListener('change', () => {
-                        localStorage.setItem(activeId, activeCheckbox.checked);
-                    });
                 });
             })
             .catch(error => {
