@@ -44,7 +44,7 @@
             <form id="registration-form" name="registration-form">
                 <div class="form-group">
                     <label for="name">الاسم الكامل:</label>
-                    <input type="text" id="name" name="name" class="form-control" required>
+                    <input type="text" id="name" name="name" class="form-control" pattern="[\u0600-\u06FF\s]+" title="يُسمح فقط بالحروف العربية" required>
                 </div>
                 
                 <div class="form-group">
@@ -57,6 +57,11 @@
                     <input type="number" id="age" name="age" class="form-control" min="16" max="30" required>
                 </div>
                 
+                <div class="form-group">
+                    <label for="number">رقم الهاتف:</label>
+                    <input type="tel" id="number" name="number" class="form-control" pattern="[0-9]{11}" title="يجب أن يتكون رقم الهاتف من 11 رقمًا" required>
+                </div>
+        
                 <div class="form-group">
                     <label for="email">البريد الإلكتروني:</label>
                     <input type="email" id="email" name="email" class="form-control" required>
@@ -73,7 +78,15 @@
                     </select>
                 </div>
                 
-                <button type="submit" class="submit-btn">تسجيل</button>
+                <button type="submit" class="submit-btn" id="submitBtn">تسجيل</button>
+                
+                <!-- رسالة جاري الإرسال -->
+                <div id="loadingMessage" style="display: none; text-align: center; margin-top: 15px;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">جاري التحميل...</span>
+                    </div>
+                    <p style="margin-top: 10px;">جاري إرسال البيانات، الرجاء الانتظار...</p>
+                </div>
             </form>
         </div>
 
@@ -96,21 +109,25 @@
     <div class="footer">
         <p> ©2025 حقوق النشر طلاب معهد اكتوبر العالي للهندسة</p>
     </div>
-
+    
     <script>
-
-        // إرسال نموذج التسجيلhttps://docs.google.com/spreadsheets/d/1eAUNv-OksaLsAbuCNWr5_vrkaAEW15TxBLI7HcXHoxE/edit?usp=sharing
         const scriptURL = "https://script.google.com/macros/s/AKfycbwrj9OpVczwOuocRk5U3zw2KVOKRSXzfJqHkNyE3gbJKnY9kjp5hjA_Lgs7wzGSkII/exec";
         const form = document.forms["registration-form"];
+        const submitBtn = document.getElementById("submitBtn");
+        const loadingMessage = document.getElementById("loadingMessage");
         
         form.addEventListener("submit", (e) => {
             e.preventDefault();
             
             // التحقق من صحة النموذج قبل الإرسال
             if(!form.checkValidity()) {
-                Swal.fire('خطأ', 'يرجى ملء جميع الحقول المطلوبة', 'error');
+                Swal.fire('خطأ', 'يرجى ملء جميع الحقول المطلوبة بشكل صحيح', 'error');
                 return;
             }
+            
+            // تعطيل الزر وإظهار رسالة التحميل
+            submitBtn.disabled = true;
+            loadingMessage.style.display = "block";
             
             fetch(scriptURL, { 
                 method: "POST", 
@@ -127,11 +144,14 @@
             .catch((error) => {
                 Swal.fire('خطأ', 'حدث خطأ أثناء محاولة التسجيل', 'error');
                 console.error('Error:', error);
+            })
+            .finally(() => {
+                // إعادة تمكين الزر وإخفاء رسالة التحميل
+                submitBtn.disabled = false;
+                loadingMessage.style.display = "none";
             });
         });
-
-
-
+    
         document.addEventListener('DOMContentLoaded', () => {
             const username = localStorage.getItem('username');
             if (!username) {
@@ -140,15 +160,16 @@
                 document.getElementById('username').textContent = username;
             }
         });
+        
         const logoutButton = document.getElementById('logoutButton');
-        logoutButton.addEventListener('click', () => {
-
-            localStorage.removeItem('username');
-            localStorage.removeItem('password');
-            window.location.href = './../../index.html';
-            swal("تم تسجيل الخروج", "تم تسجيل الخروج بنجاح.", "success");
-
-        });
+        if(logoutButton) {
+            logoutButton.addEventListener('click', () => {
+                localStorage.removeItem('username');
+                localStorage.removeItem('password');
+                window.location.href = './../../index.html';
+                swal("تم تسجيل الخروج", "تم تسجيل الخروج بنجاح.", "success");
+            });
+        }
     </script>
 
     <script>
@@ -179,8 +200,9 @@
                     const name = row.c && row.c[0] ? row.c[0].v : "غير متوفر";
                     const code = row.c && row.c[1] ? row.c[1].v : "غير متوفر";
                     const age = row.c && row.c[2] ? row.c[2].v : "غير متوفر";
-                    const email = row.c && row.c[3] ? row.c[3].v : "غير متوفر";
-                    const department = row.c && row.c[4] ? row.c[4].v : "غير محدد";
+                    const number = row.c && row.c[3] ? row.c[3].v : "غير متوفر";
+                    const email = row.c && row.c[4] ? row.c[4].v : "غير متوفر";
+                    const department = row.c && row.c[5] ? row.c[5].v : "غير محدد";
 
                     const registeredId = `registered-${index}`;
                     const activeId = `active-${index}`;
@@ -194,6 +216,9 @@
                         </div>
                         <div class="card-content">
                             <div class="card-title">العمر: ${age}</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">رقم الهاتف: ${number}</div>
                         </div>
                         <div class="card-content">
                             <div class="card-title">البريد الإلكتروني: ${email}</div>
