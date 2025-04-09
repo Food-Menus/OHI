@@ -255,7 +255,23 @@
     font-size: 16px;
     transition: all 0.3s;
     display: block;
-    width: 100%;
+    width: 40%; /* عرض 50% من النموذج */
+    margin: 0 auto; /* تلقائي من الجانبين (للمركزة) */
+    display: block; /* لجعله في سطر منفصل */
+    }
+    .logout-btn {
+        background: #ff3232;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.3s;
+        display: block;
+        width: 20%;
+        margin: 0 auto; /* تلقائي من الجانبين (للمركزة) */
+        display: block; /* لجعله في سطر منفصل */
     }
     .submit-btn:hover {
     background: var(--dark);
@@ -436,11 +452,103 @@
     transform: rotate(180deg);
     }
 
+/****************************************************************************************/
+/* دي الاكواد الخاصه بتسجيل الدخول */
+/****************************************************************************************/
+
+    #loginForm {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: #f9f9f9;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        font-family: 'Tajawal', sans-serif;
+        text-align: center;
+    }
+    .section__header {
+        color: #6A0C0B; /* اللون الأحمر الداكن */
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: 700;
+    }
+    #loginForm h4 {
+        color: #333;
+        font-size: 1.2rem;
+        margin-bottom: 25px;
+        font-weight: 500;
+    }
+    #loginForm input {
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        text-align: right;
+    }
+    #loginForm input:focus {
+        border-color: #6A0C0B;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(106, 12, 11, 0.2);
+    }
+    .WhatsApp {
+        background-color: var(--dark);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 100%;
+        font-weight: bold;
+    }
+    .WhatsApp:hover {
+        background-color: #266b2f;
+        transform: translateY(-2px);
+    }
+    .WhatsApp:active {
+        transform: translateY(0);
+    }
+    #loginForm {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
 /*******************************/
 /* التكيف مع الشاشات الصغيرة */
 /*******************************/
 
     @media (max-width: 768px) {
+
+    #loginForm {
+        padding: 20px;
+        margin: 20px;
+    }
+    
+    .section__header {
+        font-size: 1.8rem;
+    }
+    
+    #loginForm h4 {
+        font-size: 1rem;
+    }
+    
+    #loginForm input {
+        padding: 12px;
+    }
+    
+    .WhatsApp {
+        padding: 12px 25px;
+    }
+
+
 
     .card {
     font-size: 1.2rem;
