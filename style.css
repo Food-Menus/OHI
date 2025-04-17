@@ -259,6 +259,22 @@
     margin: 0 auto; /* تلقائي من الجانبين (للمركزة) */
     display: block; /* لجعله في سطر منفصل */
     }
+    .Create-btn {
+        text-decoration: none;
+
+        background: #4d9240;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.3s;
+        display: block;
+        width: 40%; /* عرض 50% من النموذج */
+        margin: 0 auto; /* تلقائي من الجانبين (للمركزة) */
+        display: block; /* لجعله في سطر منفصل */
+    }
     .logout-btn {
         background: #ff3232;
         color: white;
@@ -457,9 +473,9 @@
 /****************************************************************************************/
 
     #loginForm {
-        max-width: 500px;
-        margin: 0 auto;
+        max-width: 90vw;
         padding: 30px;
+        margin: 0 auto;
         background-color: #f9f9f9;
         border-radius: 15px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
