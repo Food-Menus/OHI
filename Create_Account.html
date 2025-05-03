@@ -159,6 +159,13 @@
             color: #3498db;
             font-weight: bold;
         }
+        
+        .password-requirements {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-align: right;
+        }
     </style>
 </head>
 
@@ -201,6 +208,16 @@
             
             <input type="email" id="email" name="email" placeholder="البريد الإلكتروني" required>
             
+            <div class="password-requirements">
+                كلمة المرور يجب أن تحتوي على:
+                <ul>
+                    <li>8 أحرف على الأقل</li>
+                    <li>حرف كبير واحد على الأقل (A-Z)</li>
+                    <li>حرف صغير واحد على الأقل (a-z)</li>
+                    <li>رقم واحد على الأقل (0-9)</li>
+                </ul>
+            </div>
+            
             <input type="password" id="password" name="password" placeholder="كلمة المرور" required>
             
             <input type="password" id="confirmPassword" name="confirmPassword" placeholder="تأكيد كلمة المرور" required>
@@ -231,6 +248,13 @@
             document.querySelector('.sidebar').classList.remove('active');
         });
         
+        // دالة للتحقق من قوة كلمة المرور
+        function isPasswordStrong(password) {
+            // يجب أن تحتوي على حرف كبير واحد على الأقل، حرف صغير واحد على الأقل، رقم واحد على الأقل، و8 أحرف على الأقل
+            const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+            return strongRegex.test(password);
+        }
+        
         form.addEventListener("submit", (e) => {
             e.preventDefault();
             
@@ -246,6 +270,12 @@
             
             if(password !== confirmPassword) {
                 Swal.fire('خطأ', 'كلمة المرور غير متطابقة', 'error');
+                return;
+            }
+            
+            // التحقق من قوة كلمة المرور
+            if(!isPasswordStrong(password)) {
+                Swal.fire('خطأ', 'كلمة المرور يجب أن تحتوي على الأقل على 8 أحرف، حرف كبير واحد، حرف صغير واحد ورقم واحد', 'error');
                 return;
             }
             

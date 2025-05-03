@@ -188,7 +188,7 @@
             <form id="loginForm">
                 <h4>برجاء تسجيل الدخول أولاً لتسجيل البيانات</h4><br>
     
-                <input  type="text" id="email" name="email" placeholder="أدخل الايميل الخاص بحسابك" required>
+                <input  type="text" id="email" name="email" placeholder="أدخل أسم المستخدم" required>
                 <br>
                 <input type="text" id="password" name="password" placeholder="أدخل كلمة المرور" required>
                 <br>
@@ -222,8 +222,8 @@
                 const jsonData = JSON.parse(data.substr(47).slice(0, -2));
                 const rows = jsonData.table.rows;
     
-                const result = {};
-    
+                const result = {};        console.log(rows)
+
                 rows.forEach(row => {
                     const key = row.c[4] ? row.c[4].v : null;
                     const value = row.c[1] ? row.c[1].v : null;
@@ -232,7 +232,7 @@
                         result[key] = value;
                     }
                 });
-    
+
                 for (const key in result) {
                     if (result.hasOwnProperty(key)) {
                         targetObject[key] = result[key];
@@ -298,6 +298,7 @@
                     icon: 'error'
                 });
             });
-    </script>
+
+</script>
 </body>
 </html>

@@ -331,8 +331,9 @@
                         const row = rows[i];
                         const email = row.c[4]?.v;
                         const password = row.c[1]?.v;
-                        
-                        if (email === storedEmail && password === storedPassword) {
+                        console.log(storedEmail)
+                        console.log(email)
+                        if (email === storedEmail) {
                             userData = {
                                 username: row.c[0]?.v || 'غير متوفر',
                                 phone: row.c[2]?.v || 'غير متوفر',
