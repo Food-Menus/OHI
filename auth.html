@@ -8,7 +8,151 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" href="./اساسيات/Logo_OHI_min.png" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="./style.css">
+    <style>
+        /* أنماط CSS تبقى كما هي */
+        body {
+            font-family: 'Tajawal', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .sidebar {
+            width: 250px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            right: -250px;
+            background-color: #2c3e50;
+            color: white;
+            transition: right 0.3s;
+            z-index: 1000;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .sidebar.active {
+            right: 0;
+        }
+        
+        .sidebar-logo {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+        }
+        
+        .sidebar-menus {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .sidebar-menus a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .sidebar-menus a:hover {
+            background-color: #34495e;
+        }
+        
+        .menu-off {
+            background-color: #e74c3c;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 100;
+        }
+        
+        .menu-toggle {
+            cursor: pointer;
+        }
+        
+        .header-logo {
+            height: 50px;
+        }
+        
+        .user svg {
+            color: #2c3e50;
+        }
+        
+        .main-content {
+            padding: 20px;
+            margin-top: 20px;
+            min-height: calc(100vh - 160px);
+        }
+        
+        .section__header {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        form h4 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .WhatsApp {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .WhatsApp:hover {
+            background-color: #2980b9;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body>
@@ -30,124 +174,130 @@
                 <path d="M5 5H13V19H5V5ZM19 19H15V5H19V19ZM4 3C3.44772 3 3 3.44772 3 4V20C3 20.5523 3.44772 21 4 21H20C20.5523 21 21 20.5523 21 20V4C21 3.44772 20.5523 3 20 3H4ZM7 12L11 8.5V15.5L7 12Z"></path>
             </svg>
         </div>
-        <img class="header-logo" src="./اساسيات/logo.jpg" alt="شعار مطعم OHI">
-        <!-- أيقونة الموقع -->
+        <img class="header-logo" src="./اساسيات/logo.jpg" alt="شعار المعهد">
         <a href="./index.html" class="user">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="currentColor"><path d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20ZM12 11H16V13H12V16L8 12L12 8V11Z"></path></svg>        </a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="currentColor"><path d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20ZM12 11H16V13H12V16L8 12L12 8V11Z"></path></svg>
+        </a>
     </div>
 
     <div class="main-content">
 
-        <br><h2 class="section__header">مرحباً بك </h2><br>
+        <div class="main-content">
+            <br><h2 class="section__header">مرحباً بك</h2><br>
+    
+            <form id="loginForm">
+                <h4>برجاء تسجيل الدخول أولاً لتسجيل البيانات</h4><br>
+    
+                <input  type="text" id="email" name="email" placeholder="أدخل أسم المستخدم" required>
+                <br>
+                <input type="text" id="password" name="password" placeholder="أدخل كلمة المرور" required>
+                <br>
+                <button type="submit" class="WhatsApp">تسجيل الدخول</button><br><br>
+                <a href="./Create_Account.html"><h4>انشاء حساب جديد</h4></a><br>
+            </form>
+        
+            <div class="footer">
+                <p> ©2025 حقوق النشر طلاب معهد اكتوبر العالي للهندسة</p>
+            </div>
+        </div>
 
-        <form id="loginForm">
-            <h4>برجاء تسجيل الدخول اولا لتسجيل البيانات  </h4><br>
-
-            <input type="text" id="username" name="username" placeholder="أدخل أسم المستخدم">
-            <br>
-            <input type="password" id="password" name="password" placeholder="أدخل كلمة المرور">
-            <br>
-            <button type="submit"  class="WhatsApp" >تسجيل الدخول</button><br><br>
-            <a href="./Create_Account.html"><h4>  انشاء حساب جديد  </h4></a><br>
-
-        </form>
     
         <div class="footer">
             <p> ©2025 حقوق النشر طلاب معهد اكتوبر العالي للهندسة</p>
         </div>
-
     </div>
 
     <script>
-const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/1eAUNv-OksaLsAbuCNWr5_vrkaAEW15TxBLI7HcXHoxE/gviz/tq?tqx=out:json';
-const targetObject = {};
-
-fetch(googleSheetUrl)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.text();
-    })
-    .then(data => {
-        const jsonData = JSON.parse(data.substr(47).slice(0, -2));
-        const rows = jsonData.table.rows;
-
-        const result = {};
-
-        rows.forEach(row => {
-            const key = row.c[0] ? row.c[0].v : null;
-            const value = row.c[1] ? row.c[1].v : null;
-            if (key && value) {
-                result[key] = value;
-            }
-        });
-
-        for (const key in result) {
-            if (result.hasOwnProperty(key)) {
-                targetObject[key] = result[key];
-            }
-        }
-
-        const loginForm = document.getElementById('loginForm');
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-
-        loginForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
-
-            if (!username || !password) {
-                Swal.fire('خطأ', 'يرجى إدخال اسم المستخدم وكلمة المرور', 'error');
-                return;
-            }
-
-            // التحقق من وجود المستخدم في قاعدة البيانات
-            if (!targetObject.hasOwnProperty(username)) {
-                Swal.fire({
-                    title: 'المستخدم غير مسجل',
-                    text: 'اسم المستخدم غير موجود في قاعدة البيانات. هل ترغب في إنشاء حساب جديد؟',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'نعم، الانتقال للتسجيل',
-                    cancelButtonText: 'إلغاء'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = './Create_Account.html'; // صفحة إنشاء حساب جديد
+        const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/1eAUNv-OksaLsAbuCNWr5_vrkaAEW15TxBLI7HcXHoxE/gviz/tq?tqx=out:json';
+        const targetObject = {};
+    
+        fetch(googleSheetUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                const jsonData = JSON.parse(data.substr(47).slice(0, -2));
+                const rows = jsonData.table.rows;
+    
+                const result = {};
+    
+                rows.forEach(row => {
+                    const key = row.c[4] ? row.c[4].v : null;
+                    const value = row.c[1] ? row.c[1].v : null;
+                    
+                    if (key && value) {
+                        result[key] = value;
                     }
                 });
-                return;
-            }
-
-            // التحقق من صحة كلمة المرور
-            if (targetObject[username].toString() === password) {
-                localStorage.setItem('username', username);
-                localStorage.setItem('password', password);
-                
-                Swal.fire({
-                    title: 'تم التسجيل بنجاح',
-                    text: 'جاري تحويلك إلى الصفحة الرئيسية...',
-                    icon: 'success',
-                    timer: 2000,
-                    showConfirmButton: false
-                }).then(() => {
-                    window.location.href = 'Form.html';
+    
+                for (const key in result) {
+                    if (result.hasOwnProperty(key)) {
+                        targetObject[key] = result[key];
+                    }
+                }
+    
+                const loginForm = document.getElementById('loginForm');
+                const emailInput = document.getElementById('email');
+                const passwordInput = document.getElementById('password');
+    
+                loginForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    const email = emailInput.value;
+                    const password = passwordInput.value;
+    
+                    // التحقق من وجود البريد الإلكتروني
+                    if (!targetObject[email]) {
+                        Swal.fire({
+                            title: 'البريد الإلكتروني غير مسجل',
+                            text: 'البريد الإلكتروني الذي أدخلته غير مسجل في النظام. هل ترغب في إنشاء حساب جديد؟',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'نعم، إنشاء حساب',
+                            cancelButtonText: 'لا، شكراً'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = './Create_Account.html';
+                            }
+                        });
+                        return;
+                    }
+    
+                    // التحقق من صحة كلمة المرور
+                    if (targetObject[email].toString() !== password) {
+                        Swal.fire({
+                            title: 'كلمة المرور غير صحيحة',
+                            text: 'كلمة المرور التي أدخلتها غير صحيحة. يرجى المحاولة مرة أخرى.',
+                            icon: 'error'
+                        });
+                        return;
+                    }
+    
+                    // إذا كانت البيانات صحيحة
+                    localStorage.setItem('email', email);
+                    localStorage.setItem('password', password);
+                    
+                    Swal.fire({
+                        title: 'تم تسجيل الدخول بنجاح',
+                        text: 'جاري تحويلك إلى صفحة الملف الشخصي...',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = 'Profile.html';
+                    });
                 });
-            } else {
-                Swal.fire('خطأ', 'كلمة المرور غير صحيحة', 'error');
-                passwordInput.value = '';
-                passwordInput.focus();
-            }
-        });
-    })
-    .catch(error => {
-        console.error('Error fetching data from Google Sheets:', error);
-        Swal.fire('خطأ', 'حدث خطأ في الاتصال بقاعدة البيانات', 'error');
-    });
+            })
+            .catch(error => {
+                console.error('Error fetching data from Google Sheets:', error);
+                Swal.fire({
+                    title: 'خطأ في الاتصال',
+                    text: 'حدث خطأ أثناء محاولة الاتصال بالخادم. يرجى المحاولة مرة أخرى لاحقاً.',
+                    icon: 'error'
+                });
+            });
     </script>
-
-    <script src="javascript.js"></script>
 </body>
-
-</html> 
+</html>

@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام تسجيل المواد الدراسية</title>
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+        /* استخدام المتغيرات من الكود الآخر */
+        :root {
+            --primary: #e63946;
+            --dark: #1f4fa2;
+            --light: #f8f9fa;
+        }
+    
+        body {
+            font-family: 'Tajawal', sans-serif; /* استخدام نفس الخط */
+            background-color: var(--light); /* خلفية فاتحة */
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            direction: rtl; /* لغة عربية */
+        }
+    
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+    
+        h1 {
+            color: var(--dark); /* لون داكن */
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    
+        .form-group {
+            margin-bottom: 20px;
+        }
+    
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--dark); /* لون داكن */
+        }
+    
+        select,
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Tajawal', sans-serif; /* استخدام نفس الخط */
+        }
+    
+        button {
+            background-color: #3498db; /* لون أزرق */
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 30px auto 0;
+        }
+    
+        button:hover {
+            background-color: #2980b9; /* لون أزرق أغمق */
+        }
+    
+        .courses-container {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+    
+        .course-item {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .selected-courses {
+            margin-top: 30px;
+        }
+    
+        .selected-course {
+            background-color: #e8f4fc;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+    
+        .remove-btn {
+            background-color: #e74c3c; /* لون أحمر */
+            color: white;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    
+        .student-info {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+    
+        #loadingMessage {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #3498db; /* لون أزرق */
+        }
+    
+        @media (max-width: 768px) {
+            .student-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="menu-toggle">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                <path d="M5 5H13V19H5V5ZM19 19H15V5H19V19ZM4 3C3.44772 3 3 3.44772 3 4V20C3 20.5523 3.44772 21 4 21H20C20.5523 21 21 20.5523 21 20V4C21 3.44772 20.5523 3 20 3H4ZM7 12L11 8.5V15.5L7 12Z"></path>
+            </svg>
+        </div>
+        <img class="header-logo" src="./اساسيات/logo.jpg" alt="شعار  OHI">
+        <!-- أيقونة الموقع -->
+        <a href="./index.html" class="user">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="currentColor"><path d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20ZM12 11H16V13H12V16L8 12L12 8V11Z"></path></svg>        </a>
+    </div>
+
+
+
+    <div class="container">
+        <h1>نظام تسجيل المواد الدراسية</h1>
+        
+        <div class="student-info">
+            <div class="form-group">
+                <label for="student-phone">رقم الهاتف</label>
+                <input type="tel" id="student-phone" placeholder="أدخل رقم هاتفك" required>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="specialization">التخصص</label>
+            <select id="specialization" onchange="updateYears()">
+                <option value="">-- اختر التخصص --</option>
+                <option value="بدون تخصص">بدون تخصص</option>
+                <option value="استثمار وبنوك">استثمار وبنوك</option>
+                <option value="نظم معلومات الأعمال">نظم معلومات الأعمال</option>
+                <option value="إدارة الأعمال">إدارة الأعمال</option>
+                <option value="تسويق">تسويق</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="year">السنة الدراسية</label>
+            <select id="year" onchange="updateSemesters()" disabled>
+                <option value="">-- اختر السنة --</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="semester">الفصل الدراسي</label>
+            <select id="semester" onchange="updateCourses()" disabled>
+                <option value="">-- اختر الفصل --</option>
+            </select>
+        </div>
+        
+        <div class="courses-container" id="courses-container" style="display: none;">
+            <h3>المواد المتاحة</h3>
+            <div id="courses-list"></div>
+        </div>
+        
+        <div class="selected-courses" id="selected-courses" style="display: none;">
+            <h3>المواد المسجلة</h3>
+            <div id="selected-courses-list"></div>
+        </div>
+        
+        <button id="submit-btn" onclick="submitRegistration()" style="display: none;">تسجيل المواد</button>
+    </div>
+
+    <div id="loadingMessage">جاري تسجيل البيانات الرجاء الانتظار...</div>
+
+    <script>
+        // بيانات المواد لكل تخصص وسنة وترم
+        const coursesData = {
+            
+            "بدون تخصص": {
+                "السنة الاولي": {
+                    "الفصل الدراسي الأول": [
+                        "مبادئ الاقتصاد",
+                        "مبادئ المحاسبه الماليه",
+                        "لغه أنجليزية1",
+                        "مبادئ اداره الاعمال",
+                        "مبادئ القانون"
+                    ],
+                    "الفصل الدراسي الثاني": [
+                        "تفكير الابتكاري",
+                        "السلوك التنظيمي",
+                        "طرق ومهارات الاتصال",
+                        "رياضيات الاعمال",
+                        "حقوق الانسان",
+                        "مقدمه في الحاسب الالي"
+                    ]
+                },
+                "السنة الثانية": {
+                    "الفصل الدراسي الأول": [
+                        "مبادئ الاقتصاد الجزئي",
+                        "إداره اللوجستيات وسلاسل الإمداد",
+                        "مبادئ محاسبه التكاليف",
+                        "إداره الانتاج والعمليات",
+                        "القانون التجاري"
+                    ],
+                    "الفصل الدراسي الثاني": [
+                        "تحليلات الأعمال",
+                        "مبادئ محاسبه الاداريه",
+                        "لغه انجليزيه 2",
+                        "مبادئ التسويق",
+                        "مبادئ الاداره الماليه",
+                        "نظم المعلومات الإدارية"
+                    ]
+                }
+            },     
+            "استثمار وبنوك": {
+                "السنة الثالثة": {
+                    "الفصل الدراسي الأول": [
+                        "أخلاقيات الأعمال والحوكمة",
+                        "مبادئ الاقتصاد الكلي",
+                        "مبادئ الاستثمار",
+                        "التأمين وإدارة المخاطر",
+                        "إدارة الائتمان والمخاطر"
+                    ],
+                    "الفصل الدراسي الثاني": [
+                        "رياضيات الأعمال والمشروعات الصغيرة",
+                        "إدارة الجودة الشاملة",
+                        "إدارة الأزمات",
+                        "إدارة مالية متقدمة",
+                        "إدارة الموارد البشرية",
+                        "إدارة البنوك"
+                    ]
+                },
+                "السنة الرابعة": {
+                    "الفصل الدراسي الأول": [
+                        "إدارة مشروعات",
+                        "اقتصاديات النقود والبنوك",
+                        "مبادئ المالية العامة",
+                        "الإحصاء التطبيقي",
+                        "إدارة استثمار متقدمة"
+                    ],
+                    "الفصل الدراسي الثاني": [
+                        "إدارة الأعمال الإلكترونية",
+                        "دراسة جدوى المشروعات",
+                        "إدارة المحافظ المالية والمشتقات",
+                        "نظم المعلومات المحاسبية",
+                        "أساليب كمية واتخاذ القرارات",
+                        "إدارة استراتيجية"
+                    ]
+                }
+            },
+            "نظم معلومات الأعمال": {
+                "السنة الثالثة": {
+                    "الفصل الدراسي الأول": [
+                        "مبادئ الاقتصاد الكلي",
+                        "مبادئ الاستثمار",
+                        "التأمين وإدارة المخاطر",
+                        "تصميم برامج الحاسب الآلي",
+                        "قواعد البيانات"
+                    ],
+                    "الفصل الدراسي الثاني": [
+                        "ريادة الأعمال والمشروعات الصغيرة",
+                        "إدارة الجودة الشاملة",
+                        "إدارة الأزمات",
+                        "إدارة الموارد البشرية",
+                        "تحليل وتصميم نظم المعلومات",
+                        "البنية التحتية لتكنولوجيا المعلومات"
+                    ]
+                },
+                "السنة الرابعة": {
+                    "الفصل الدراسي الأول": [
+                        "أنظمة معلومات المؤسسات",
+                        "مبادئ المالية العامة",
+                        "الإحصاء التطبيقي",
+                        "إدارة الأعمال الإلكترونية",
+                        "تطبيقات في برمجة الحاسب الآلي"
+                    ],
+                    "الفصل الدراسي الثاني": [
+                        "تحليلات الأعمال والتنقيب في البيانات",
+                        "استراتيجية نظم المعلومات",
+                        "أساليب كمية واتخاذ القرارات",
+                        "دراسة جدوى المشروعات",
+                        "الإدارة الاستراتيجية",
+                        "مشروع التخرج"
+                    ]
+                }
+            },
+            "إدارة الأعمال": {
+                "السنة الثالثة": {
+                    "الفصل الدراسي الأول": [
+                        "أخلاقيات الأعمال والحوكمة",
+                        "إدارة التسويق",
+                        "مبادئ الاقتصاد الكلي",
+                        "مبادئ الاستثمار",
+                        "التأمين وإدارة المخاطر"
+                    ],
+                    "الفصل الدراسي الثاني": [
+                        "التسويق الدولي",
+                        "ريادة الأعمال والمشروعات الصغيرة",
+                        "اقتصاديات النقود والبنوك",
+                        "إدارة الجودة الشاملة",
+                        "إدارة الأزمات",
+                        "إدارة الموارد البشرية"
+                    ]
+                },
+                "السنة الرابعة": {
+                    "الفصل الدراسي الأول": [
+                        "إدارة المشروعات",
+                        "مبادئ المالية العامة",
+                        "الإحصاء التطبيقي",
+                        "إدارة مالية متقدمة",
+                        "الإدارة الاستراتيجية للموارد البشرية"
+                    ],
+                    "الفصل الدراسي الثاني": [
+                        "إدارة الأداء والحوافز",
+                        "إدارة التغير",
+                        "الإدارة الاستراتيجية",
+                        "أساليب كمية واتخاذ القرارات",
+                        "إدارة المحافظ المالية والمشتقات",
+                        "إدارة الأعمال الإلكترونية"
+                    ]
+                }
+            },
+            "تسويق": {
+                "السنة الثالثة": {
+                    "الفصل الدراسي الأول": [
+                        "أخلاقيات الأعمال والحوكمة",
+                        "إدارة التسويق",
+                        "مبادئ الاقتصاد الكلي",
+                        "مبادئ الاستثمار",
+                        "التأمين وإدارة المخاطر"
+                    ],
+                    "الفصل الدراسي الثاني": [
+                        "ريادة الأعمال والمشروعات الصغيرة",
+                        "إدارة الجودة الشاملة",
+                        "إدارة الأزمات",
+                        "إدارة الموارد البشرية",
+                        "بحوث التسويق",
+                        "إدارة المنتجات الجديدة"
+                    ]
+                },
+                "السنة الرابعة": {
+                    "الفصل الدراسي الأول": [
+                        "الاتصالات التسويقية المتكاملة",
+                        "التسويق الدولي",
+                        "مبادئ المالية العامة",
+                        "الإحصاء التطبيقي",
+                        "سلوك المستهلك"
+                    ],
+                    "الفصل الدراسي الثاني": [
+                        "المنشآت التسويقية",
+                        "خدمات التسويق",
+                        "إدارة الأعمال الإلكترونية",
+                        "دراسة جدوى المشروعات",
+                        "أساليب كمية واتخاذ القرارات",
+                        "إدارة استراتيجية"
+                    ]
+                }
+            }
+        };
+
+        let selectedCourses = [];
+        const scriptURL = "https://script.google.com/macros/s/AKfycbxHSodNagROMC3n78Hj4HQ90kGLlYJBUu8qWfK1SKkVmMSkicDuaDLsb2EkvHp2GAk/exec"; // استبدل هذا بالرابط الخاص بك
+        //                 https://script.google.com/macros/s/AKfycbxHSodNagROMC3n78Hj4HQ90kGLlYJBUu8qWfK1SKkVmMSkicDuaDLsb2EkvHp2GAk/exec
+        // عند تحميل الصفحة، تحقق من وجود بيانات مخزنة
+        window.onload = function() {
+            const savedData = localStorage.getItem('studentCoursesData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                document.getElementById('student-phone').value = data.phone || '';
+                document.getElementById('specialization').value = data.specialization || '';
+                
+                if (data.specialization) {
+                    updateYears();
+                    document.getElementById('year').value = data.year || '';
+                    
+                    if (data.year) {
+                        updateSemesters();
+                        document.getElementById('semester').value = data.semester || '';
+                        
+                        if (data.semester) {
+                            updateCourses();
+                        }
+                    }
+                }
+                
+                if (data.courses && data.courses.length > 0) {
+                    selectedCourses = data.courses;
+                    updateSelectedCoursesList();
+                    document.getElementById('selected-courses').style.display = 'block';
+                    document.getElementById('submit-btn').style.display = 'block';
+                }
+            }
+        };
+
+        // تحديث السنوات المتاحة بناءً على التخصص المختار
+        function updateYears() {
+            const specialization = document.getElementById('specialization').value;
+            const yearSelect = document.getElementById('year');
+            const semesterSelect = document.getElementById('semester');
+            
+            // إعادة تعيين القوائم
+            yearSelect.innerHTML = '<option value="">-- اختر السنة --</option>';
+            semesterSelect.innerHTML = '<option value="">-- اختر الفصل --</option>';
+            semesterSelect.disabled = true;
+            document.getElementById('courses-container').style.display = 'none';
+            document.getElementById('selected-courses').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'none';
+            
+            if (specialization) {
+                yearSelect.disabled = false;
+                
+                // إضافة السنوات المتاحة لهذا التخصص
+                const years = Object.keys(coursesData[specialization]);
+                years.forEach(year => {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    yearSelect.appendChild(option);
+                });
+                
+                // حفظ التخصص في localStorage
+                saveToLocalStorage('specialization', specialization);
+            } else {
+                yearSelect.disabled = true;
+                saveToLocalStorage('specialization', '');
+            }
+        }
+
+        // تحديث الفصول الدراسية بناءً على السنة المختارة
+        function updateSemesters() {
+            const specialization = document.getElementById('specialization').value;
+            const year = document.getElementById('year').value;
+            const semesterSelect = document.getElementById('semester');
+            
+            // إعادة تعيين القائمة
+            semesterSelect.innerHTML = '<option value="">-- اختر الفصل --</option>';
+            document.getElementById('courses-container').style.display = 'none';
+            document.getElementById('selected-courses').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'none';
+            
+            if (year) {
+                semesterSelect.disabled = false;
+                
+                // إضافة الفصول المتاحة لهذه السنة
+                const semesters = Object.keys(coursesData[specialization][year]);
+                semesters.forEach(semester => {
+                    const option = document.createElement('option');
+                    option.value = semester;
+                    option.textContent = semester;
+                    semesterSelect.appendChild(option);
+                });
+                
+                // حفظ السنة في localStorage
+                saveToLocalStorage('year', year);
+            } else {
+                semesterSelect.disabled = true;
+                saveToLocalStorage('year', '');
+            }
+        }
+
+        // تحديث المواد المتاحة بناءً على الفصل الدراسي المختار
+        function updateCourses() {
+            const specialization = document.getElementById('specialization').value;
+            const year = document.getElementById('year').value;
+            const semester = document.getElementById('semester').value;
+            const coursesList = document.getElementById('courses-list');
+            
+            coursesList.innerHTML = '';
+            document.getElementById('courses-container').style.display = 'none';
+            document.getElementById('selected-courses').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'none';
+            
+            if (semester) {
+                document.getElementById('courses-container').style.display = 'block';
+                
+                // عرض المواد المتاحة لهذا الفصل
+                const courses = coursesData[specialization][year][semester];
+                courses.forEach(course => {
+                    const courseItem = document.createElement('div');
+                    courseItem.className = 'course-item';
+                    
+                    const courseName = document.createElement('span');
+                    courseName.textContent = course;
+                    
+                    const addButton = document.createElement('button');
+                    addButton.textContent = 'إضافة';
+                    addButton.onclick = function() {
+                        addCourse(course);
+                    };
+                    
+                    courseItem.appendChild(courseName);
+                    courseItem.appendChild(addButton);
+                    coursesList.appendChild(courseItem);
+                });
+                
+                // حفظ الفصل الدراسي في localStorage
+                saveToLocalStorage('semester', semester);
+            } else {
+                saveToLocalStorage('semester', '');
+            }
+        }
+
+        // إضافة مادة إلى قائمة المواد المسجلة
+        function addCourse(courseName) {
+            if (!selectedCourses.includes(courseName)) {
+                selectedCourses.push(courseName);
+                updateSelectedCoursesList();
+                
+                // إظهار زر التسجيل إذا كان هناك مواد مسجلة
+                if (selectedCourses.length > 0) {
+                    document.getElementById('submit-btn').style.display = 'block';
+                    document.getElementById('selected-courses').style.display = 'block';
+                }
+                
+                // حفظ المواد المختارة في localStorage
+                saveToLocalStorage('courses', selectedCourses);
+            }
+        }
+
+        // إزالة مادة من قائمة المواد المسجلة
+        function removeCourse(courseName) {
+            selectedCourses = selectedCourses.filter(course => course !== courseName);
+            updateSelectedCoursesList();
+            
+            // إخفاء زر التسجيل إذا لم يكن هناك مواد مسجلة
+            if (selectedCourses.length === 0) {
+                document.getElementById('submit-btn').style.display = 'none';
+                document.getElementById('selected-courses').style.display = 'none';
+            }
+            
+            // حفظ المواد المختارة في localStorage
+            saveToLocalStorage('courses', selectedCourses);
+        }
+
+        // تحديث قائمة المواد المسجلة
+        function updateSelectedCoursesList() {
+            const selectedCoursesList = document.getElementById('selected-courses-list');
+            selectedCoursesList.innerHTML = '';
+            
+            selectedCourses.forEach(course => {
+                const courseItem = document.createElement('div');
+                courseItem.className = 'selected-course';
+                
+                const courseName = document.createElement('span');
+                courseName.textContent = course;
+                
+                const removeButton = document.createElement('button');
+                removeButton.className = 'remove-btn';
+                removeButton.textContent = 'إزالة';
+                removeButton.onclick = function() {
+                    removeCourse(course);
+                };
+                
+                courseItem.appendChild(courseName);
+                courseItem.appendChild(removeButton);
+                selectedCoursesList.appendChild(courseItem);
+            });
+        }
+
+        // حفظ البيانات في localStorage
+        function saveToLocalStorage(key, value) {
+            const savedData = localStorage.getItem('studentCoursesData');
+            let data = savedData ? JSON.parse(savedData) : {};
+            
+            data[key] = value;
+            data['phone'] = document.getElementById('student-phone').value;
+            
+            localStorage.setItem('studentCoursesData', JSON.stringify(data));
+        }
+
+        // تسجيل المواد وإرسال البيانات
+        function submitRegistration() {
+            const studentPhone = document.getElementById('student-phone').value;
+            const specialization = document.getElementById('specialization').value;
+            const year = document.getElementById('year').value;
+            const semester = document.getElementById('semester').value;
+            
+            if (!studentPhone) {
+                alert('الرجاء إدخال رقم الهاتف');
+                return;
+            }
+            
+            if (selectedCourses.length === 0) {
+                alert('الرجاء اختيار مواد للتسجيل');
+                return;
+            }
+            
+            // تعطيل الزر وإظهار رسالة التحميل
+            document.getElementById('submit-btn').disabled = true;
+            document.getElementById('loadingMessage').style.display = 'block';
+            
+            // تحضير البيانات للإرسال
+            const formData = new FormData();
+            formData.append('phone', studentPhone);
+            formData.append('specialization', specialization);
+            formData.append('year', year);
+            formData.append('semester', semester);
+            formData.append('courses', JSON.stringify(selectedCourses));
+            formData.append('timestamp', new Date().toISOString());
+            
+            // إرسال البيانات إلى Google Script
+            fetch(scriptURL, { 
+                method: "POST", 
+                body: formData 
+            })
+            .then((response) => {
+                if(response.ok) {
+                    alert('تم تسجيل المواد بنجاح');
+                    // يمكنك إعادة تعيين النموذج هنا إذا لزم الأمر
+                     resetForm();
+                     window.location.href = 'Profile.html';
+
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch((error) => {
+                alert('حدث خطأ أثناء محاولة التسجيل');
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                // إعادة تمكين الزر وإخفاء رسالة التحميل
+                document.getElementById('submit-btn').disabled = false;
+                document.getElementById('loadingMessage').style.display = 'none';
+            });
+        }
+
+        // إعادة تعيين النموذج (اختياري)
+        function resetForm() {
+            document.getElementById('student-phone').value = '';
+            document.getElementById('specialization').value = '';
+            document.getElementById('year').value = '';
+            document.getElementById('year').disabled = true;
+            document.getElementById('semester').value = '';
+            document.getElementById('semester').disabled = true;
+            document.getElementById('courses-list').innerHTML = '';
+            document.getElementById('selected-courses-list').innerHTML = '';
+            document.getElementById('courses-container').style.display = 'none';
+            document.getElementById('selected-courses').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'none';
+            selectedCourses = [];
+            localStorage.removeItem('studentCoursesData');
+        }
+
+        // حفظ رقم الهاتف عند تغييره
+        document.getElementById('student-phone').addEventListener('change', function() {
+            saveToLocalStorage('phone', this.value);
+        });
+
+
+
+
+        document.querySelector('.menu-toggle').addEventListener('click', function () {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+
+        document.querySelector('.menu-off').addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector('.sidebar').classList.remove('active');
+        });
+    </script>
+    
+        <script src="javascript.js"></script>
+
+</body>
+</html>

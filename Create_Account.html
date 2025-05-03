@@ -8,7 +8,158 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" href="./اساسيات/Logo_OHI_min.png" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="./style.css">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .sidebar {
+            width: 250px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            right: -250px;
+            background-color: #2c3e50;
+            color: white;
+            transition: right 0.3s;
+            z-index: 1000;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .sidebar.active {
+            right: 0;
+        }
+        
+        .sidebar-logo {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+        }
+        
+        .sidebar-menus {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .sidebar-menus a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .sidebar-menus a:hover {
+            background-color: #34495e;
+        }
+        
+        .menu-off {
+            background-color: #e74c3c;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 100;
+        }
+        
+        .menu-toggle {
+            cursor: pointer;
+        }
+        
+        .header-logo {
+            height: 50px;
+        }
+        
+        .user svg {
+            color: #2c3e50;
+        }
+        
+        .main-content {
+            padding: 20px;
+            margin-top: 20px;
+            min-height: calc(100vh - 160px);
+        }
+        
+        .section__header {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        form h4 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .Create-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .Create-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        #loadingMessage {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            color: #3498db;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
@@ -33,24 +184,33 @@
         <img class="header-logo" src="./اساسيات/logo.jpg" alt="شعار مطعم OHI">
         <!-- أيقونة الموقع -->
         <a href="./index.html" class="user">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="currentColor"><path d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20ZM12 11H16V13H12V16L8 12L12 8V11Z"></path></svg>        </a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="currentColor"><path d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20ZM12 11H16V13H12V16L8 12L12 8V11Z"></path></svg>
+        </a>
     </div>
 
     <div class="main-content">
-
         <br><h2 class="section__header">انشاء حساب جديد</h2><br>
         <form id="loginForm">
-            <h4>برجاء ادخال اسمك و الباسورد الذي تريدة</h4>
-            <input type="text" id="username" name="username" placeholder=" هنا الأسم " required>
-            <input type="password" id="password" name="password" placeholder="هنا كلمة المرور" required>
-         <button type="submit" class="Create-btn" id="submitBtn">انشاء حساب </button>
+            <h4>برجاء إدخال البيانات المطلوبة</h4>
+            
+            <input type="text" id="username" name="username" placeholder="الاسم بالكامل" required>
+            
+            <input type="tel" id="phone" name="phone" placeholder="رقم الهاتف" required>
+            
+            <input type="number" id="age" name="age" placeholder="العمر" min="16" max="30" required>
+            
+            <input type="email" id="email" name="email" placeholder="البريد الإلكتروني" required>
+            
+            <input type="password" id="password" name="password" placeholder="كلمة المرور" required>
+            
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="تأكيد كلمة المرور" required>
+            
+            <button type="submit" class="Create-btn" id="submitBtn">إنشاء حساب</button>
         </form>
         
-
         <div class="footer">
             <p> ©2025 حقوق النشر طلاب معهد اكتوبر العالي للهندسة</p>
         </div>
-
     </div>
 
     <div id="loadingMessage">جاري انشاء حساب الرجاء الانتظار...</div>
@@ -61,6 +221,16 @@
         const submitBtn = document.getElementById("submitBtn");
         const loadingMessage = document.getElementById("loadingMessage");
         
+        // فتح وإغلاق القائمة الجانبية
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+        
+        document.querySelector('.menu-off').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.sidebar').classList.remove('active');
+        });
+        
         form.addEventListener("submit", (e) => {
             e.preventDefault();
             
@@ -70,17 +240,34 @@
                 return;
             }
             
+            // التحقق من تطابق كلمة المرور
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if(password !== confirmPassword) {
+                Swal.fire('خطأ', 'كلمة المرور غير متطابقة', 'error');
+                return;
+            }
+            
+            // التحقق من صحة العمر
+            const age = document.getElementById('age').value;
+            if(age < 16 || age > 60) {
+                Swal.fire('خطأ', 'الرجاء إدخال عمر بين 16 و 60 سنة', 'error');
+                return;
+            }
+            
             // تعطيل الزر وإظهار رسالة التحميل
             submitBtn.disabled = true;
             loadingMessage.style.display = "block";
             
+            // إرسال البيانات
             fetch(scriptURL, { 
                 method: "POST", 
                 body: new FormData(form) 
             })
             .then((response) => {
                 if(response.ok) {
-                    Swal.fire('تم بنجاح', 'تم تسجيل الدخول بنجاح', 'success');
+                    Swal.fire('تم بنجاح', 'تم إنشاء الحساب بنجاح', 'success');
                     form.reset();
                     window.location.href = './auth.html'; 
                 } else {
@@ -98,7 +285,5 @@
             });
         });
     </script>
-    <script src="javascript.js"></script>
 </body>
-
-</html> 
+</html>
